@@ -113,9 +113,9 @@ class_grades
 How many students in the class are in each grade?
 
 ```{r}
-## Look!!!
-## We are using three functions to draw a plot!
-## This is a form of function chaining/composition.
+# Look!!!
+# We are using three functions to draw a plot!
+# This is a form of function chaining/composition.
 ggplot(data = class_grades, mapping = aes(x = grade)) +
   geom_bar() +
   ggtitle("Count of Students by Grade")
@@ -124,14 +124,12 @@ ggplot(data = class_grades, mapping = aes(x = grade)) +
 ⬆️ Is just a plain image.
 
 ```{r}
-## Look!!!
-## We are using TWO (2) functions to draw a plot!
-## This is a form of function chaining/composition.
-library(ggiraph)
+# Now we are using an additional package, plotly, to make an interactive plot.
+library(plotly)
 p <- ggplot(data = class_grades, mapping = aes(x = grade)) +
-  geom_bar_interactive() +
+  geom_bar() +
   ggtitle("Count of Students by Grade")
-girafe(p)
+ggplotly(p)
 ```
 
 ⬆️ This is an interactive graph.

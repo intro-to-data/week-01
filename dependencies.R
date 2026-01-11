@@ -9,11 +9,11 @@
 p <- c(
   "ggrepel",
   "httpgd",
-  "ggiraph",
   "janitor",
   "knitr",
   "lubridate",
   "markdown",
+  "plotly",
   "readxl",
   "revealjs",
   "rio",
