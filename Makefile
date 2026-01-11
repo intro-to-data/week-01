@@ -23,10 +23,10 @@ data: $(CLASS_GRADES)
 lecture: $(LECTURE)
 all: data lecture
 
-style: $(LECTURE) ($(LAB) $(CLASS_GRADES)
+style:
 	Rscript -e "styler::style_dir('.'); styler::style_dir('data/')"
 
-zip: zip.R $(LECTURE) $(LAB) $(CLASS_GRADES)
+zip: zip.R
 	Rscript $<
 
 clean:
