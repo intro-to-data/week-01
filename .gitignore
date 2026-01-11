@@ -1,6 +1,10 @@
+lecture_files/*
+lab_files/*
+
 *.csv
 *.html
-*.Rproj
+*.zip
+
 .Rproj.user
 .Rhistory
 .RData
