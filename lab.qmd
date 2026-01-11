@@ -1,49 +1,61 @@
 ---
-title: "Star Wars Lab"
+title: "Class Grades"
 format: html
-editor: 
-  markdown: 
-    wrap: 72
 ---
+
 
 # Learning Objectives:
 
 - Have some fun.
-- Learn about notebooks
+- Learn about notebooks.
 - What is a data frame?
   - Rows V columns
   - What is a row of data?
   - Data types
-- Tour of the RStudio Cloud interface
+- Tour of the RStudio interface
 - How to run a code chunk
 - How to render a notebook
 - Structure of a R command (function)
 
+
 # Notebooks
 
-Our work will be managed in documents called notebooks. This document you are viewing is a notebook. A RMarkdown notebook combines plain text with R code to create a reproducible document.
+- Our work will be managed in documents called Quarto notebooks.
+    - This document is a notebook.
+    - The weekly lecture notes are a notebook.
+- A notebook combines plain text with R code to create a reproducible analysis.
 
-The lecture notes are a notebook. The lab is a notebook. The work we do for this class will always be in a notebook. I will make all R scripts used in this course available for you to study/review.
 
 # Setup
 
-- To make sure you have everything loaded you will need for the lecture/lab, look for a section labeled "Setup" and run the code block in that section of the notebook.
-- Run the code chunk now, PLEASE!!!
+- Base R comes with some nice features, but we are going to use packages to give us additional functionality.
+- We have to lead these at the beginning of the session.
+- The `setup`  code chunk will always be the _first_ code chunk.
+  - I will often use it to import data.
+  - This code chunk loads two packages, `openxlsx` and the `tidyverse`.
+    - `openxlsx`: Imports/
+- Run the following code chunk to formally start your R programming journey.
   - Use the little green arrow to the right of the editor window.
   - Or use the keyboard shortcut, `Ctrl+Shift+Enter`
 
 ```{r}
+#| label: setup
 #| echo: false
 
-# Loads two packages into our current session.
-library(tidyverse)
-library(ggrepel)
+# The first two lines of this code chunk:
+# 1. Name it "setup".
+# 2. Suppress all output from the code.
 
-# Loads Star Wars data into our current session.
-data(starwars)
+# Loads two packages into our current session.
+library(janitor)
+library(readxl)
+library(tidyverse) # <- This always generates a bunch of output.
+
+# Imports the class_grades data we used earlier.
+class_grades <- read_xlsx("data/class_grades.xlsx") |> clean_names()
 ```
 
-- A R function is often a verb, such as `import()`.
+- A R function is often a verb, such as `read_xlsx()`.
 - Some functions, like `library()` are not verbs. 🤷
 - Immediately after a function is:
   - an "open parenthesis",
@@ -51,22 +63,44 @@ data(starwars)
   - followed by a "close parenthesis".
 - R code is composed of lots of "little" functions which are often chained together.
   - This is also called functional composition. For our purposes, these two terms have basically the same meaning.
-  - Very different from SAS/SPSS syntax which is based around a smaller set of functions which are more powerful.
+  - This differs from SAS/SPSS syntax which is based around a smaller set of functions which are more powerful.
+
 
 # Data
 
+Always look at your data.
+
+- Maybe this means opening it in Excel.
+- Maybe this means looking at it in R.
+
+Either way, look through your data.
+
 ```{r}
-# This prints the data into our notebook.
-starwars
+# Do you notice anything different about the data we are working with today?
+class_grades
 ```
 
-- Observe how the results of the code are embedded in the notebook.
+- The results of the code are embedded in the notebook.
   - When you run the code in a notebook, R creates a new file, `lab.nb.html`, which contains the original code AND the HTML containing the output.
-  - In a healthcare setting, this `nb.html` file must be carefully protected because it can contain PHI.
-  - A .qmd file only contains PHI if you enter it manually into the text or code, and why on earth would you do that?
-- `starwars` is a data frame
+  - In a healthcare setting, the contetns of `lab_files` folder must be carefully protected because it can contain PHI.
+  - The notebook, `lab.qmd`, only contains PHI if you enter it manually into the text or code, and why on earth would you do that?
+- `class_grades` is a data frame
 - What does a single row of data represent?
 - What kinds of data types do we have?
+  - Computer Science:
+    - Integers - `age`
+    - Floats - `first_lab`
+    - Strings - `student_name`, `grade`
+    - Boolean - `TRUE`/`FALSE`; no examples here
+    - Dates - `2025-09-01`; no examples here
+  - Statistics:
+    - Categorical
+      - Nominal - `sex`; no order
+      - Ordinal - `grade`; meaningful order
+    - Numeric
+      - Discrete - `age`
+      - Continuous - `first_lab`
+
 
 # Plotting
 
@@ -76,81 +110,84 @@ starwars
   - Helps us focus on the patterns, not the individual details.
 - To run a single line of code within a code chunk, `Ctrl+Enter`.
 
+How many students in the class are in each grade?
+
+```{r}
+## Look!!!
+## We are using three functions to draw a plot!
+## This is a form of function chaining/composition.
+ggplot(data = class_grades, mapping = aes(x = grade)) +
+  geom_bar() +
+  ggtitle("Count of Students by Grade")
+```
+
+⬆️ Is just a plain image.
+
 ```{r}
 ## Look!!!
 ## We are using TWO (2) functions to draw a plot!
 ## This is a form of function chaining/composition.
-ggplot(data = starwars, mapping = aes(x = homeworld)) +
-    geom_bar()
+library(ggiraph)
+p <- ggplot(data = class_grades, mapping = aes(x = grade)) +
+  geom_bar_interactive() +
+  ggtitle("Count of Students by Grade")
+girafe(p)
 ```
 
-- **Oops:** I can't read the X Axis can you?
-- Notice how RStudio superimposes formatting on our markdown.
+⬆️ This is an interactive graph.
+
+## YOUR TURN!!!
 
 ```{r}
-ggplot(
-    data = starwars, mapping = aes(y = homeworld)) +
-    geom_bar()
-```
-
-Much better!
-
-```{r}
-# Can YOU draw a bar plot showing the number of characters by species?
+# Draw a bar plot showing the number of students in each lab group.
 
 ```
 
+
+# Per Student Average
+
+- Earlier in the week, we calculated per-student grades.
+- Let's do that again, using R.
+
 ```{r}
-ggplot(
-    data = starwars, mapping = aes(x = mass, y = height)) +
-    geom_point()
+# There's a lot going on here, but it isn't that different from Excel.
+class_grades <-
+  class_grades |>
+  mutate(
+    lab_grade = (first_lab + second_lab + third_lab) / 3,
+    exam_grade = (first_exam + second_exam) / 2,
+    final_grade = (lab_grade + exam_grade) / 2
+  )
+class_grades
 ```
 
-We've got ONE REALLY heavy character.
+⬆️ There are some differences, but this isn't that different from Excel.
+
+
+# Group Averages
+
+## Class Average
+
+- Question: Which grade had the highest average lab grade?
 
 ```{r}
-ggplot(
-    data = starwars, mapping = aes(x = mass, y = height, label = name)) +
-    geom_point() +
-    geom_text_repel()
+class_grades |>
+  summarize(
+    lab_average = mean(lab_grade),
+    exam_average = mean(exam_grade),
+    final_average = mean(final_grade)
+  )
 ```
 
-We can (always) blame the Hutts. Drop all beings which weigh more than 1,000 pounds from our analysis.
+## Grade Averages
+
+This is an example of how I structure lab questions.
+
+- Question: Which lab group had the highest average lab grade?
+- Answer: 
+- Helpful Hints:
+  - You can use the code we wrote above.
 
 ```{r}
-lighter_starwars <-
-    starwars |>
-    filter(mass < 1000)
-
-ggplot(
-    data = lighter_starwars,
-    mapping = aes(x = mass, y = height, label = name)
-) +
-    geom_point() +
-    geom_text_repel()
-```
-
-Add a basic regression line.
-
-```{r}
-ggplot(
-    data = lighter_starwars,
-    mapping = aes(x = mass, y = height, label = name)
-    ) +
-    geom_point() +
-    geom_smooth(method = "lm", se = TRUE) +
-    geom_text_repel()
-```
-
-Last challenge for tonight:
-
-```{r}
-## - Load the midwest data set.
-## - What is the relationship between college education and poverty?
-## - Hint: Look at the percollege and percbelowpoverty
-data(midwest)
-?midwest
-
-## YOUR TURN!
 
 ```
