@@ -12,7 +12,7 @@ library(zip)
 zip(
   zipfile = "Week 01.zip",
   files = c(
-    "LICENSE.txt",
+    "LICENSE",
     "README.md",
     "dependencies.R",
     "lab.qmd",
