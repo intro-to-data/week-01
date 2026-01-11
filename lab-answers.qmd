@@ -190,6 +190,7 @@ This is an example of how I structure lab questions.
 - Answer: LG Three
 - Helpful Hints:
   - You can use the code we wrote above.
+  - Find the `mean` of the `lab_grade` column.
 
 ```{r}
 class_grades |>
