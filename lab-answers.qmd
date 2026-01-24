@@ -1,6 +1,8 @@
 ---
 title: "Class Grades"
-format: html
+format:
+  html:
+    embed-resources: true
 ---
 
 
@@ -134,6 +136,7 @@ ggplotly(p)
 
 ⬆️ This is an interactive graph.
 
+
 ## YOUR TURN!!!
 
 ```{r}
@@ -167,6 +170,7 @@ class_grades
 
 # Group Averages
 
+
 ## Class Average
 
 - Question: Which grade had the highest average lab grade?
@@ -179,6 +183,7 @@ class_grades |>
     final_average = mean(final_grade)
   )
 ```
+
 
 ## Grade Averages
 

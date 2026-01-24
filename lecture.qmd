@@ -2,9 +2,6 @@
 title: "Week 01 Lecture"
 subtitle: "Introducing Intro to Data"
 format: revealjs
-editor: 
-  markdown: 
-    wrap: 80
 ---
 
 # Week 01 Lecture
@@ -56,10 +53,11 @@ editor:
 - There will be a few lectures online as well.
 - Readings are assigned weekly.
 - Grades:
-  - 40% Midterm & Final 
-  - 20% Objectives/Readings 
+  - 30% Midterm & Final
+  - 20% Labs
   - 20% Beyond The Numbers
   - 20% Individual Assignments
+  - 10% Objectives/Readings
 
 
 ## Lab Structure

@@ -1,6 +1,8 @@
 ---
 title: "Class Grades"
-format: html
+format:
+  html:
+    embed-resources: true
 ---
 
 

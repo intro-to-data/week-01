@@ -8,7 +8,6 @@
 
 p <- c(
   "ggrepel",
-  "httpgd",
   "janitor",
   "knitr",
   "lubridate",
